@@ -18,16 +18,18 @@ func (c *Client) NewGetDeparturesRequest() GetDeparturesRequest {
 	r.queryParams = r.NewQueryParams()
 	r.pathParams = r.NewPathParams()
 	r.requestBody = r.NewRequestBody()
+	r.requestHeader = r.NewRequestHeader()
 	return r
 }
 
 type GetDeparturesRequest struct {
-	client      *Client
-	queryParams *GetDeparturesQueryParams
-	pathParams  *GetDeparturesPathParams
-	method      string
-	headers     http.Header
-	requestBody GetDeparturesRequestBody
+	client        *Client
+	queryParams   *GetDeparturesQueryParams
+	pathParams    *GetDeparturesPathParams
+	method        string
+	headers       http.Header
+	requestBody   GetDeparturesRequestBody
+	requestHeader GetDeparturesRequestHeader
 }
 
 func (r GetDeparturesRequest) NewQueryParams() *GetDeparturesQueryParams {
@@ -77,6 +79,29 @@ func (r *GetDeparturesRequest) Method() string {
 	return r.method
 }
 
+func (r GetDeparturesRequest) NewRequestHeader() GetDeparturesRequestHeader {
+	return GetDeparturesRequestHeader{
+		AuthenticationContext: AuthenticationContext{
+			SiteID:       r.client.SiteID(),
+			InterfaceID:  r.client.InterfaceID(),
+			OperatorCode: r.client.OperatorCode(),
+			Password:     r.client.Password(),
+		},
+	}
+}
+
+func (r *GetDeparturesRequest) RequestHeader() *GetDeparturesRequestHeader {
+	return &r.requestHeader
+}
+
+func (r *GetDeparturesRequest) RequestHeaderInterface() interface{} {
+	return &r.requestHeader
+}
+
+type GetDeparturesRequestHeader struct {
+	AuthenticationContext AuthenticationContext `xml:"AuthenticationContext"`
+}
+
 func (r GetDeparturesRequest) NewRequestBody() GetDeparturesRequestBody {
 	return GetDeparturesRequestBody{}
 }
@@ -106,37 +131,7 @@ func (r *GetDeparturesRequest) NewResponseBody() *GetDeparturesResponseBody {
 type GetDeparturesResponseBody struct {
 	XMLName                   xml.Name       `xml:GetDeparturesResponse`
 	PmsintGetDeparturesResult ExceptionBlock `xml:"pmsint_GetDeparturesResult"`
-	GetDepartures             struct {
-		Departures struct {
-			CpmsintGetDeparturesDepartureItem []struct {
-				DepositPaid    string `xml:"DepositPaid"`
-				DepositDue     string `xml:"DepositDue"`
-				Infants        string `xml:"Infants"`
-				Children       string `xml:"Children"`
-				Adults         string `xml:"Adults"`
-				RoomType       string `xml:"RoomType"`
-				Package        string `xml:"Package"`
-				Company        string `xml:"Company"`
-				Notes          string `xml:"Notes"`
-				BookRef        string `xml:"BookRef"`
-				BookRefRoomRef string `xml:"BookRefRoomRef"`
-				ETA            string `xml:"ETA"`
-				Salutation     string `xml:"Salutation"`
-				Surname        string `xml:"Surname"`
-				Forename       string `xml:"Forename"`
-				RoomID         string `xml:"RoomID"`
-				ETD            string `xml:"ETD"`
-				PrivateNotes   string `xml:"PrivateNotes"`
-				PublicNotes    string `xml:"PublicNotes"`
-				CustomNotes1   string `xml:"CustomNotes1"`
-				CustomNotes2   string `xml:"CustomNotes2"`
-				CustomNotes3   string `xml:"CustomNotes3"`
-				ExternalNotes  string `xml:"ExternalNotes"`
-				RoomBalance    string `xml:"RoomBalance"`
-				Master         string `xml:"Master"`
-			} `xml:"cpmsint_GetDepartures_DepartureItem"`
-		} `xml:"Departures"`
-	} `xml:"GetDepartures"`
+	Departures                Departures     `xml:"GetDepartures>Departures>cpmsint_GetDepartures_DepartureItem"`
 }
 
 func (r *GetDeparturesRequest) URL() *url.URL {
@@ -168,4 +163,34 @@ func (r *GetDeparturesRequest) Do() (GetDeparturesResponseBody, error) {
 	responseBody := r.NewResponseBody()
 	_, err = r.client.Do(req, responseBody)
 	return *responseBody, err
+}
+
+type Departures []Departure
+
+type Departure struct {
+	DepositPaid    string `xml:"DepositPaid"`
+	DepositDue     string `xml:"DepositDue"`
+	Infants        string `xml:"Infants"`
+	Children       string `xml:"Children"`
+	Adults         string `xml:"Adults"`
+	RoomType       string `xml:"RoomType"`
+	Package        string `xml:"Package"`
+	Company        string `xml:"Company"`
+	Notes          string `xml:"Notes"`
+	BookRef        string `xml:"BookRef"`
+	BookRefRoomRef string `xml:"BookRefRoomRef"`
+	ETA            string `xml:"ETA"`
+	Salutation     string `xml:"Salutation"`
+	Surname        string `xml:"Surname"`
+	Forename       string `xml:"Forename"`
+	RoomID         string `xml:"RoomID"`
+	ETD            string `xml:"ETD"`
+	PrivateNotes   string `xml:"PrivateNotes"`
+	PublicNotes    string `xml:"PublicNotes"`
+	CustomNotes1   string `xml:"CustomNotes1"`
+	CustomNotes2   string `xml:"CustomNotes2"`
+	CustomNotes3   string `xml:"CustomNotes3"`
+	ExternalNotes  string `xml:"ExternalNotes"`
+	RoomBalance    string `xml:"RoomBalance"`
+	Master         string `xml:"Master"`
 }

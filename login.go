@@ -18,16 +18,18 @@ func (c *Client) NewLoginRequest() LoginRequest {
 	r.queryParams = r.NewQueryParams()
 	r.pathParams = r.NewPathParams()
 	r.requestBody = r.NewRequestBody()
+	r.requestHeader = r.NewRequestHeader()
 	return r
 }
 
 type LoginRequest struct {
-	client      *Client
-	queryParams *LoginQueryParams
-	pathParams  *LoginPathParams
-	method      string
-	headers     http.Header
-	requestBody LoginRequestBody
+	client        *Client
+	queryParams   *LoginQueryParams
+	pathParams    *LoginPathParams
+	method        string
+	headers       http.Header
+	requestBody   LoginRequestBody
+	requestHeader LoginRequestHeader
 }
 
 func (r LoginRequest) NewQueryParams() *LoginQueryParams {
@@ -75,6 +77,21 @@ func (r *LoginRequest) SetMethod(method string) {
 
 func (r *LoginRequest) Method() string {
 	return r.method
+}
+
+func (r LoginRequest) NewRequestHeader() LoginRequestHeader {
+	return LoginRequestHeader{}
+}
+
+func (r *LoginRequest) RequestHeader() *LoginRequestHeader {
+	return &r.requestHeader
+}
+
+func (r *LoginRequest) RequestHeaderInterface() interface{} {
+	return &r.requestHeader
+}
+
+type LoginRequestHeader struct {
 }
 
 func (r LoginRequest) NewRequestBody() LoginRequestBody {

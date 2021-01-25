@@ -18,16 +18,18 @@ func (c *Client) NewBookingSearchRequest() BookingSearchRequest {
 	r.queryParams = r.NewQueryParams()
 	r.pathParams = r.NewPathParams()
 	r.requestBody = r.NewRequestBody()
+	r.requestHeader = r.NewRequestHeader()
 	return r
 }
 
 type BookingSearchRequest struct {
-	client      *Client
-	queryParams *BookingSearchQueryParams
-	pathParams  *BookingSearchPathParams
-	method      string
-	headers     http.Header
-	requestBody BookingSearchRequestBody
+	client        *Client
+	queryParams   *BookingSearchQueryParams
+	pathParams    *BookingSearchPathParams
+	method        string
+	headers       http.Header
+	requestBody   BookingSearchRequestBody
+	requestHeader BookingSearchRequestHeader
 }
 
 func (r BookingSearchRequest) NewQueryParams() *BookingSearchQueryParams {
@@ -75,6 +77,29 @@ func (r *BookingSearchRequest) SetMethod(method string) {
 
 func (r *BookingSearchRequest) Method() string {
 	return r.method
+}
+
+func (r BookingSearchRequest) NewRequestHeader() BookingSearchRequestHeader {
+	return BookingSearchRequestHeader{
+		AuthenticationContext: AuthenticationContext{
+			SiteID:       r.client.SiteID(),
+			InterfaceID:  r.client.InterfaceID(),
+			OperatorCode: r.client.OperatorCode(),
+			Password:     r.client.Password(),
+		},
+	}
+}
+
+func (r *BookingSearchRequest) RequestHeader() *BookingSearchRequestHeader {
+	return &r.requestHeader
+}
+
+func (r *BookingSearchRequest) RequestHeaderInterface() interface{} {
+	return &r.requestHeader
+}
+
+type BookingSearchRequestHeader struct {
+	AuthenticationContext AuthenticationContext `xml:"AuthenticationContext"`
 }
 
 func (r BookingSearchRequest) NewRequestBody() BookingSearchRequestBody {
