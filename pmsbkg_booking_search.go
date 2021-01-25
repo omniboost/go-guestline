@@ -131,49 +131,9 @@ func (r *BookingSearchRequest) NewResponseBody() *BookingSearchResponseBody {
 }
 
 type BookingSearchResponseBody struct {
-	XMLName                   xml.Name       `xml:BookingSearchResponse`
-	PmsbkgBookingSearchResult ExceptionBlock `xml:"pmsbkg_BookingSearchResult"`
-	SearchResults             struct {
-		Reservations []struct {
-			RoomId        string `xml:"RoomId"`
-			BookRef       string `xml:"BookRef"`
-			RoomPickId    string `xml:"RoomPickId"`
-			BookingType   string `xml:"BookingType"`
-			BookingStatus string `xml:"BookingStatus"`
-			RoomTypeCode  string `xml:"RoomTypeCode"`
-			PackageCode   string `xml:"PackageCode"`
-			Arrival       string `xml:"Arrival"`
-			Departure     string `xml:"Departure"`
-			Creation      string `xml:"Creation"`
-			Guests        []struct {
-				Name         string `xml:"Name"`
-				Salutation   string `xml:"Salutation"`
-				Forename     string `xml:"Forename"`
-				Surname      string `xml:"Surname"`
-				TypeOfPerson string `xml:"TypeOfPerson"`
-				Gender       struct {
-					Nil string `xml:"nil,attr"`
-				} `xml:"Gender"`
-				ProfileRef string `xml:"ProfileRef"`
-				LoyaltyID  string `xml:"LoyaltyID"`
-				FolioID    string `xml:"FolioID"`
-			} `xml:"Guests>Guest"`
-			PostsAllowed          string `xml:"PostsAllowed"`
-			BookRefRoomPickID     string `xml:"BookRefRoomPickID"`
-			AllowRoomMoves        string `xml:"AllowRoomMoves"`
-			MarketSegment         string `xml:"MarketSegment"`
-			TotalCostNett         string `xml:"TotalCostNett"`
-			TotalCostGross        string `xml:"TotalCostGross"`
-			LastEdited            string `xml:"LastEdited"`
-			GDSRef                string `xml:"GDSRef"`
-			CRSRef1               string `xml:"CRSRef1"`
-			CRSRef2               string `xml:"CRSRef2"`
-			SystemSource          string `xml:"SystemSource"`
-			DistributionChannelId string `xml:"DistributionChannelId"`
-			PreCheckIn            string `xml:"PreCheckIn"`
-			RezlynxCRS            string `xml:"RezlynxCRS"`
-		} `xml:"Reservations>Reservation"`
-	} `xml:"SearchResults"`
+	XMLName                   xml.Name             `xml:BookingSearchResponse`
+	PmsbkgBookingSearchResult ExceptionBlock       `xml:"pmsbkg_BookingSearchResult"`
+	SearchResults             BookingSearchResults `xml:"SearchResults"`
 }
 
 func (r *BookingSearchRequest) URL() *url.URL {
@@ -205,4 +165,50 @@ func (r *BookingSearchRequest) Do() (BookingSearchResponseBody, error) {
 	responseBody := r.NewResponseBody()
 	_, err = r.client.Do(req, responseBody)
 	return *responseBody, err
+}
+
+type BookingSearchResults struct {
+	Reservations BookingSearchReservations `xml:"Reservations>Reservation"`
+}
+
+type BookingSearchReservations []BookingSearchReservation
+
+type BookingSearchReservation struct {
+	RoomId        string `xml:"RoomId"`
+	BookRef       string `xml:"BookRef"`
+	RoomPickId    string `xml:"RoomPickId"`
+	BookingType   string `xml:"BookingType"`
+	BookingStatus string `xml:"BookingStatus"`
+	RoomTypeCode  string `xml:"RoomTypeCode"`
+	PackageCode   string `xml:"PackageCode"`
+	Arrival       string `xml:"Arrival"`
+	Departure     string `xml:"Departure"`
+	Creation      string `xml:"Creation"`
+	Guests        []struct {
+		Name         string `xml:"Name"`
+		Salutation   string `xml:"Salutation"`
+		Forename     string `xml:"Forename"`
+		Surname      string `xml:"Surname"`
+		TypeOfPerson string `xml:"TypeOfPerson"`
+		Gender       struct {
+			Nil string `xml:"nil,attr"`
+		} `xml:"Gender"`
+		ProfileRef string `xml:"ProfileRef"`
+		LoyaltyID  string `xml:"LoyaltyID"`
+		FolioID    string `xml:"FolioID"`
+	} `xml:"Guests>Guest"`
+	PostsAllowed          string `xml:"PostsAllowed"`
+	BookRefRoomPickID     string `xml:"BookRefRoomPickID"`
+	AllowRoomMoves        string `xml:"AllowRoomMoves"`
+	MarketSegment         string `xml:"MarketSegment"`
+	TotalCostNett         string `xml:"TotalCostNett"`
+	TotalCostGross        string `xml:"TotalCostGross"`
+	LastEdited            string `xml:"LastEdited"`
+	GDSRef                string `xml:"GDSRef"`
+	CRSRef1               string `xml:"CRSRef1"`
+	CRSRef2               string `xml:"CRSRef2"`
+	SystemSource          string `xml:"SystemSource"`
+	DistributionChannelId string `xml:"DistributionChannelId"`
+	PreCheckIn            string `xml:"PreCheckIn"`
+	RezlynxCRS            string `xml:"RezlynxCRS"`
 }
