@@ -133,6 +133,10 @@ type LoginResponseBody struct {
 	SessionID   string         `xml:"SessionID"`
 }
 
+func (rb LoginResponseBody) ExceptionBlock() ExceptionBlock {
+	return rb.LogInResult
+}
+
 func (r *LoginRequest) URL() *url.URL {
 	u := r.client.GetEndpointURL("rlxsoap.asmx", r.PathParams())
 	return &u

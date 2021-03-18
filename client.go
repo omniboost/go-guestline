@@ -312,6 +312,13 @@ func (c *Client) Do(req *http.Request, body interface{}) (*http.Response, error)
 		return httpResp, &ErrorResponse{Response: httpResp, Err: soapError}
 	}
 
+	i, ok := body.(interface{ ExceptionBlock() ExceptionBlock })
+	if ok {
+		if i.ExceptionBlock().ExceptionCode != 0 {
+			return httpResp, &ErrorResponse{Response: httpResp, Err: i.ExceptionBlock()}
+		}
+	}
+
 	// if len(errorResponse.Messages) > 0 {
 	// 	return httpResp, errorResponse
 	// }

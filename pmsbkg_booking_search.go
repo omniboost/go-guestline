@@ -136,6 +136,10 @@ type BookingSearchResponseBody struct {
 	SearchResults             BookingSearchResults `xml:"SearchResults"`
 }
 
+func (rb BookingSearchResponseBody) ExceptionBlock() ExceptionBlock {
+	return rb.PmsbkgBookingSearchResult
+}
+
 func (r *BookingSearchRequest) URL() *url.URL {
 	u := r.client.GetEndpointURL("rlxsoap.asmx", r.PathParams())
 	return &u

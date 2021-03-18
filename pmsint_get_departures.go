@@ -134,6 +134,10 @@ type GetDeparturesResponseBody struct {
 	Departures                Departures     `xml:"GetDepartures>Departures>cpmsint_GetDepartures_DepartureItem"`
 }
 
+func (rb GetDeparturesResponseBody) ExceptionBlock() ExceptionBlock {
+	return rb.PmsintGetDeparturesResult
+}
+
 func (r *GetDeparturesRequest) URL() *url.URL {
 	u := r.client.GetEndpointURL("rlxsoap.asmx", r.PathParams())
 	return &u

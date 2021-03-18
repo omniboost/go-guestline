@@ -134,6 +134,10 @@ type GetArrivalsResponseBody struct {
 	Arrivals                Arrivals       `xml:"GetArrivals>Arrivals>cpmsint_GetArrivals_ArrivalItem"`
 }
 
+func (rb GetArrivalsResponseBody) ExceptionBlock() ExceptionBlock {
+	return rb.PmsintGetArrivalsResult
+}
+
 func (r *GetArrivalsRequest) URL() *url.URL {
 	u := r.client.GetEndpointURL("rlxsoap.asmx", r.PathParams())
 	return &u

@@ -132,9 +132,13 @@ func (r *GetProfileSummaryV3Request) NewResponseBody() *GetProfileSummaryV3Respo
 }
 
 type GetProfileSummaryV3ResponseBody struct {
-	XMLName xml.Name `xml:GetProfileSummaryV3Response`
-	// PmsintGetProfileSummaryV3Result ExceptionBlock `xml:"pmsprf_GetProfileSummaryV3Result"`
-	ProfileSummary ProfileSummary `xml:"pmsprf_GetProfileSummaryV3Result>ProfileSummary"`
+	XMLName                         xml.Name       `xml:GetProfileSummaryV3Response`
+	PmsintGetProfileSummaryV3Result ExceptionBlock `xml:"pmsprf_GetProfileSummaryV3Result"`
+	ProfileSummary                  ProfileSummary `xml:"pmsprf_GetProfileSummaryV3Result>ProfileSummary"`
+}
+
+func (rb GetProfileSummaryV3ResponseBody) ExceptionBlock() ExceptionBlock {
+	return rb.PmsintGetProfileSummaryV3Result
 }
 
 func (r *GetProfileSummaryV3Request) URL() *url.URL {
