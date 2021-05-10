@@ -4,7 +4,6 @@ import (
 	"encoding/xml"
 	"net/http"
 	"net/url"
-	"time"
 
 	"github.com/omniboost/go-guestline/utils"
 )
@@ -130,7 +129,7 @@ func (r *GetProfileEventsRequest) NewResponseBody() *GetProfileEventsResponseBod
 }
 
 type GetProfileEventsResponseBody struct {
-	XMLName                      xml.Name       `xml:GetProfileEventsResponse`
+	XMLName                      xml.Name       `xml:"pmsprf_GetProfileEventsResponse"`
 	PmsprfGetProfileEventsResult ExceptionBlock `xml:"pmsprf_GetProfileEventsResult"`
 	Events                       ProfileEvents  `xml:"EventResults>Events>GuestProfileEventItem"`
 }
@@ -173,21 +172,21 @@ func (r *GetProfileEventsRequest) Do() (GetProfileEventsResponseBody, error) {
 type ProfileEvents []ProfileEvent
 
 type ProfileEvent struct {
-	TransID         string    `xml:"TransID"`
-	EventType       string    `xml:"EventType"`
-	EventTimeStamp  time.Time `xml:"EventTimeStamp"`
-	AllocatedRoomID string    `xml:"AllocatedRoomID"`
-	GuestProfileRef string    `xml:"GuestProfileRef"`
-	FolioID         int       `xml:"FolioID"`
-	Forename        string    `xml:"Forename"`
-	Surname         string    `xml:"Surname"`
-	Title           string    `xml:"Title"`
-	GuestStatus     string    `xml:"GuestStatus"`
-	ArrivalDate     string    `xml:"ArrivalDate"`
-	DepartureDate   string    `xml:"DepartureDate"`
-	ReservationType string    `xml:"ReservationType"`
-	FolioIndex      string    `xml:"FolioIndex"`
-	BookRefRoomRef  string    `xml:"BookRefRoomRef"`
-	PMSPackageCode  string    `xml:"PMSPackageCode"`
-	SPAPackageCode  string    `xml:"SPAPackageCode"`
+	TransID         string `xml:"TransID"`
+	EventType       string `xml:"EventType"`
+	EventTimeStamp  Time   `xml:"EventTimeStamp"`
+	AllocatedRoomID string `xml:"AllocatedRoomID"`
+	GuestProfileRef string `xml:"GuestProfileRef"`
+	FolioID         int    `xml:"FolioID"`
+	Forename        string `xml:"Forename"`
+	Surname         string `xml:"Surname"`
+	Title           string `xml:"Title"`
+	GuestStatus     string `xml:"GuestStatus"`
+	ArrivalDate     string `xml:"ArrivalDate"`
+	DepartureDate   string `xml:"DepartureDate"`
+	ReservationType string `xml:"ReservationType"`
+	FolioIndex      string `xml:"FolioIndex"`
+	BookRefRoomRef  string `xml:"BookRefRoomRef"`
+	PMSPackageCode  string `xml:"PMSPackageCode"`
+	SPAPackageCode  string `xml:"SPAPackageCode"`
 }
