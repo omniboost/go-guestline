@@ -219,7 +219,7 @@ type ProfileSummary struct {
 	Language                      string `xml:"Language"`
 	CompanyRef                    string `xml:"CompanyRef"`
 	Vip                           string `xml:"Vip"`
-	DateOfBirth                   Time   `xml:"DateOfBirth"`
+	DateOfBirth                   Date   `xml:"DateOfBirth"`
 	StudentId                     string `xml:"StudentId"`
 	TypeOfPerson                  string `xml:"TypeOfPerson"`
 	PassportNumber                string `xml:"PassportNumber"`
