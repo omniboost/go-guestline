@@ -110,7 +110,10 @@ type BookingSearchRequestBody struct {
 	XMLName   xml.Name `xml:"http://tempuri.org/RLXSOAP19/RLXSOAP19 pmsbkg_BookingSearch"`
 	SessionID string
 	Filters   struct {
-		BookRef string `xml:"BookRef"`
+		BookRef       string `xml:"BookRef,omitempty"`
+		RoomPickID    string `xml:"RoomPickID,omitempty"`
+		ArrivalDate   *Date  `xml:"ArrivalDate,omitempty"`
+		DepartureDate *Date  `xml:"DepartureDate,omitempty"`
 	} `xml:"Filters"`
 }
 
