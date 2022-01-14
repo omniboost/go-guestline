@@ -6,10 +6,9 @@ import (
 	"testing"
 )
 
-func TestBookingSearch(t *testing.T) {
-	req := client.NewBookingSearchRequest()
-	req.RequestBody().Filters.BookRef = "HWR000051"
-	// req.RequestBody().Filters.RoomPickID = "2"
+func TestRoomFolioItemsAndBalance(t *testing.T) {
+	req := client.NewRoomFolioItemsAndBalanceRequest()
+	req.RequestBody().RoomID = "101"
 	resp, err := req.Do()
 	if err != nil {
 		t.Error(err)

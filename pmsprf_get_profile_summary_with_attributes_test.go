@@ -8,10 +8,10 @@ import (
 
 func TestGetProfileSummaryWithAttributes(t *testing.T) {
 	req := client.NewGetProfileSummaryWithAttributesRequest()
-	req.RequestBody().ProfileRequestor.ProfileUniqueID = "PF003785"
+	req.RequestBody().ProfileRequestor.ProfileUniqueID = "PF003033"
 	req.RequestBody().ProfileRequestor.AuthenticationMethod = "PD"
 	req.RequestBody().ProfileRequestor.AuthenticationCode = "Surname"
-	req.RequestBody().ProfileRequestor.AuthenticationValue = "Ondruch"
+	req.RequestBody().ProfileRequestor.AuthenticationValue = "Bierreth"
 	resp, err := req.Do()
 	if err != nil {
 		t.Error(err)
