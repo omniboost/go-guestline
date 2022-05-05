@@ -175,9 +175,9 @@ type Residents []Resident
 type Resident struct {
 	DepositPaid    string `xml:"DepositPaid"`
 	DepositDue     string `xml:"DepositDue"`
-	Infants        string `xml:"Infants"`
-	Children       string `xml:"Children"`
-	Adults         string `xml:"Adults"`
+	Infants        int    `xml:"Infants"`
+	Children       int    `xml:"Children"`
+	Adults         int    `xml:"Adults"`
 	RoomType       string `xml:"RoomType"`
 	Package        string `xml:"Package"`
 	Company        string `xml:"Company"`
@@ -185,8 +185,8 @@ type Resident struct {
 	BookRef        string `xml:"BookRef"`
 	BookRefRoomRef string `xml:"BookRefRoomRef"`
 	ETA            string `xml:"ETA"`
-	Arrival        string `xml:"Arrival"`
-	Departure      string `xml:"Departure"`
+	Arrival        Time   `xml:"Arrival"`
+	Departure      Time   `xml:"Departure"`
 	Salutation     string `xml:"Salutation"`
 	Surname        string `xml:"Surname"`
 	Forename       string `xml:"Forename"`

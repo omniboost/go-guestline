@@ -130,12 +130,12 @@ func (r *GetReservationBookingLinesRequest) NewResponseBody() *GetReservationBoo
 }
 
 type GetReservationBookingLinesResponseBody struct {
-	XMLName                                xml.Name                               `xml:"pmsbkg_GetReservationBookingLinesResponse"`
-	PmsbkgGetReservationBookingLinesResult PmsbkgGetReservationBookingLinesResult `xml:"pmsbkg_GetReservationBookingLinesResult"`
+	XMLName xml.Name                               `xml:"pmsbkg_GetReservationBookingLinesResponse"`
+	Result  PmsbkgGetReservationBookingLinesResult `xml:"pmsbkg_GetReservationBookingLinesResult"`
 }
 
 func (rb GetReservationBookingLinesResponseBody) ExceptionBlock() ExceptionBlock {
-	return rb.PmsbkgGetReservationBookingLinesResult.ExceptionBlock
+	return rb.Result.ExceptionBlock
 }
 
 func (r *GetReservationBookingLinesRequest) URL() *url.URL {
@@ -177,16 +177,16 @@ type PmsbkgGetReservationBookingLinesResult struct {
 type BookingLines []BookingLine
 
 type BookingLine struct {
-	ID            string `xml:"Id"`
-	Date          string `xml:"Date"`
-	Adults        string `xml:"Adults"`
-	Children      string `xml:"Children"`
-	Infants       string `xml:"Infants"`
-	RatePlan      string `xml:"RatePlan"`
-	MarketSegment string `xml:"MarketSegment"`
-	RoomType      string `xml:"RoomType"`
-	RoomId        string `xml:"RoomId"`
-	Nett          string `xml:"Nett"`
-	Gross         string `xml:"Gross"`
-	DayLet        string `xml:"DayLet"`
+	ID            string  `xml:"Id"`
+	Date          Time    `xml:"Date"`
+	Adults        int     `xml:"Adults"`
+	Children      int     `xml:"Children"`
+	Infants       int     `xml:"Infants"`
+	RatePlan      string  `xml:"RatePlan"`
+	MarketSegment string  `xml:"MarketSegment"`
+	RoomType      string  `xml:"RoomType"`
+	RoomId        string  `xml:"RoomId"`
+	Nett          float64 `xml:"Nett"`
+	Gross         float64 `xml:"Gross"`
+	DayLet        string  `xml:"DayLet"`
 }

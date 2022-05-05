@@ -109,7 +109,7 @@ func (r RoomTypeListRequest) NewRequestBody() RoomTypeListRequestBody {
 type RoomTypeListRequestBody struct {
 	XMLName   xml.Name `xml:"http://tempuri.org/RLXSOAP19/RLXSOAP19 pmscfg_RoomTypeList"`
 	SessionID string
-	RoomDate  DateTime
+	SiteID    string
 }
 
 func (r *RoomTypeListRequest) RequestBody() *RoomTypeListRequestBody {
@@ -129,9 +129,9 @@ func (r *RoomTypeListRequest) NewResponseBody() *RoomTypeListResponseBody {
 }
 
 type RoomTypeListResponseBody struct {
-	XMLName                  xml.Name       `xml:"pmsint_RoomTypeListResponse"`
-	PmsintRoomTypeListResult ExceptionBlock `xml:"pmsint_RoomTypeListResult"`
-	RoomTypes                RoomTypes      `xml:"RoomTypeList>RoomTypeList>Room"`
+	XMLName                  xml.Name       `xml:"pmscfg_RoomTypeListResponse"`
+	PmsintRoomTypeListResult ExceptionBlock `xml:"pmscfg_RoomTypeListResult"`
+	RoomTypes                RoomTypes      `xml:"RoomTypeList>RoomTypes>RoomTypeItem"`
 }
 
 func (rb RoomTypeListResponseBody) ExceptionBlock() ExceptionBlock {
@@ -150,6 +150,10 @@ func (r *RoomTypeListRequest) Do() (RoomTypeListResponseBody, error) {
 	r.requestBody.SessionID, err = r.client.SessionID()
 	if err != nil {
 		return *r.NewResponseBody(), err
+	}
+
+	if r.requestBody.SiteID == "" {
+		r.requestBody.SiteID = r.client.SiteID()
 	}
 
 	// Create http request
@@ -172,4 +176,11 @@ func (r *RoomTypeListRequest) Do() (RoomTypeListResponseBody, error) {
 type RoomTypes []RoomType
 
 type RoomType struct {
+	RoomTypeCode      string `xml:"RoomTypeCode"`
+	RoomTypeGroupCode string `xml:"RoomTypeGroupCode"`
+	Description       string `xml:"Description"`
+	RoomTypeClass     string `xml:"RoomTypeClass"`
+	Pax               int    `xml:"Pax"`
+	SystemSource      string `xml:"SystemSource"`
+	RFlag             string `xml:"RFlag"`
 }

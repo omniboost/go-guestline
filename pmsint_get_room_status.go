@@ -131,7 +131,7 @@ func (r *GetRoomStatusRequest) NewResponseBody() *GetRoomStatusResponseBody {
 type GetRoomStatusResponseBody struct {
 	XMLName                   xml.Name       `xml:GetRoomStatusResponse`
 	PmsintGetRoomStatusResult ExceptionBlock `xml:"pmsint_GetRoomStatusResult"`
-	RoomStatus                RoomStatus     `xml:"GetRoomStatus>Departures>cpmsint_GetRoomStatus_DepartureItem"`
+	RoomStatus                RoomStatus     `xml:"GetRoomStatus>RoomStatus>cpmsint_GetRoomStatus_RoomStatusItem"`
 }
 
 func (rb GetRoomStatusResponseBody) ExceptionBlock() ExceptionBlock {
@@ -170,4 +170,13 @@ func (r *GetRoomStatusRequest) Do() (GetRoomStatusResponseBody, error) {
 }
 
 type RoomStatus struct {
+	RoomId                string `xml:"RoomId"`
+	RoomDescription       string `xml:"RoomDescription"`
+	SubGroupCode          string `xml:"SubGroupCode"`
+	RoomtypeCode          string `xml:"RoomtypeCode"`
+	Status                string `xml:"Status"`
+	HKStatus              string `xml:"HKStatus"`
+	Smoke                 string `xml:"Smoke"`
+	RoomStatusDescription string `xml:"RoomStatusDescription"`
+	HKDescription         string `xml:"HKDescription"`
 }
