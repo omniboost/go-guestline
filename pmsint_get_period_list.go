@@ -109,7 +109,7 @@ func (r GetPeriodListRequest) NewRequestBody() GetPeriodListRequestBody {
 type GetPeriodListRequestBody struct {
 	XMLName   xml.Name `xml:"http://tempuri.org/RLXSOAP19/RLXSOAP19 pmsint_GetPeriodList"`
 	SessionID string
-	RoomDate  DateTime
+	RoomDate  *DateTime `xml:"RoomDate,omitempty"`
 }
 
 func (r *GetPeriodListRequest) RequestBody() *GetPeriodListRequestBody {
