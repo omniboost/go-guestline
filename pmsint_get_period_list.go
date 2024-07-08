@@ -107,9 +107,11 @@ func (r GetPeriodListRequest) NewRequestBody() GetPeriodListRequestBody {
 }
 
 type GetPeriodListRequestBody struct {
-	XMLName   xml.Name `xml:"http://tempuri.org/RLXSOAP19/RLXSOAP19 pmsint_GetPeriodList"`
-	SessionID string
-	RoomDate  *DateTime `xml:"RoomDate,omitempty"`
+	XMLName       xml.Name `xml:"http://tempuri.org/RLXSOAP19/RLXSOAP19 pmsint_GetPeriodList"`
+	SessionID     string
+	RoomDate      *DateTime  `xml:"RoomDate,omitempty"`
+	IPeriodID     int        `xml:"IPeriodID,omitempty"`
+	EnmPeriodType PeriodType `xml:"enmPeriodType,omitempty"`
 }
 
 func (r *GetPeriodListRequest) RequestBody() *GetPeriodListRequestBody {
@@ -131,6 +133,7 @@ func (r *GetPeriodListRequest) NewResponseBody() *GetPeriodListResponseBody {
 type GetPeriodListResponseBody struct {
 	XMLName                   xml.Name       `xml:"pmsint_GetPeriodListResponse"`
 	PmsintGetPeriodListResult ExceptionBlock `xml:"pmsint_GetPeriodListResult"`
+	Period                    Periods        `xml:"GetPeriodList>Periods>cpmsint_GetPeriodListItem"`
 	RoomTypes                 RoomTypes      `xml:"GetPeriodList>GetPeriodList>Room"`
 }
 

@@ -1,5 +1,15 @@
 package guestline
 
+type PeriodType int
+
+const (
+	PeriodTypeEndOfShit  PeriodType = 1
+	PeriodTypeEndOfDay   PeriodType = 2
+	PeriodTypeEndOfWeek  PeriodType = 3
+	PeriodTypeEndOfMonth PeriodType = 4
+	PeriodTypeEndOfYear  PeriodType = 5
+)
+
 type VoucherType struct {
 	ID      int    `json:"id"`
 	Version int    `json:"version"`
@@ -820,4 +830,18 @@ type Category struct {
 	Number      string `json:"number"`
 	Description string `json:"description"`
 	Type        int    `json:"type"`
+}
+
+type Periods []Period
+
+type Period struct {
+	StrKey               string   `xml:"strKey"`
+	IPeriodTypeID        int      `xml:"iPeriodTypeID"`
+	StrPeriodDescription string   `xml:"strPeriodDescription"`
+	IPeriodType          string   `xml:"iPeriodType"`
+	IPeriodID            int      `xml:"iPeriodID"`
+	DTOpenPeriod         DateTime `xml:"dtOpenPeriod"`
+	DTClosePeriod        DateTime `xml:"dtClosePeriod"`
+	IStatus              string   `xml:"iStatus"`
+	StrOperatorCode      string   `xml:"strOperatorCode"`
 }

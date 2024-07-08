@@ -303,7 +303,7 @@ func (c *Client) Do(req *http.Request, body interface{}) (*http.Response, error)
 
 	soapError := SoapError{}
 
-	err = c.Unmarshal(httpResp.Body, &soapResponse, &soapError)
+	err = c.Unmarshal(httpResp.Body, []interface{}{&soapResponse}, []interface{}{&soapError})
 	if err != nil {
 		return httpResp, err
 	}
@@ -326,8 +326,8 @@ func (c *Client) Do(req *http.Request, body interface{}) (*http.Response, error)
 	return httpResp, nil
 }
 
-func (c *Client) Unmarshal(r io.Reader, vv ...interface{}) error {
-	if len(vv) == 0 {
+func (c *Client) Unmarshal(r io.Reader, vv []interface{}, optionalVv []interface{}) error {
+	if len(vv) == 0 && len(optionalVv) == 0 {
 		return nil
 	}
 
@@ -336,24 +336,21 @@ func (c *Client) Unmarshal(r io.Reader, vv ...interface{}) error {
 		return err
 	}
 
-	errs := []error{}
 	for _, v := range vv {
 		r := bytes.NewReader(b)
 		dec := xml.NewDecoder(r)
-		err := dec.Decode(v)
-		if err != nil {
-			errs = append(errs, err)
-		}
 
+		err := dec.Decode(v)
+		if err != nil && err != io.EOF {
+			return errors.WithStack((err))
+		}
 	}
 
-	if len(errs) == len(vv) {
-		// Everything errored
-		msgs := make([]string, len(errs))
-		for i, e := range errs {
-			msgs[i] = fmt.Sprint(e)
-		}
-		return errors.New(strings.Join(msgs, ", "))
+	for _, v := range optionalVv {
+		r := bytes.NewReader(b)
+		dec := xml.NewDecoder(r)
+
+		_ = dec.Decode(v)
 	}
 
 	return nil
