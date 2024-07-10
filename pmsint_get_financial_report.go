@@ -96,18 +96,18 @@ type GetFinancialReportRequestHeader struct {
 }
 
 func (r GetFinancialReportRequest) NewRequestBody() GetFinancialReportRequestBody {
-	return GetFinancialReportRequestBody{}
+	return GetFinancialReportRequestBody{
+		SelectionCriteria: SelectionCriteria{},
+	}
 }
 
 type GetFinancialReportRequestBody struct {
-	XMLName           xml.Name `xml:"rlx:pmsint_GetFinancialReport"`
-	SessionID         string   `xml:"rlx:SessionID"`
-	PeriodID          int      `xml:"rlx:PeriodID"`
-	SelectionCriteria struct {
-		REPORTTITLE string `xml:"REPORTTITLE"`
-	} `xml:"rlx:SelectionCriteria,omitempty"`
-	KepyoReport       bool `xml:"rlx:KepyoReport"`
-	UseValidXmlFormat bool `xml:"rlx:UseValidXmlFormat"`
+	XMLName           xml.Name          `xml:"rlx:pmsint_GetFinancialReport"`
+	SessionID         string            `xml:"rlx:SessionID"`
+	PeriodID          int               `xml:"rlx:PeriodID"`
+	SelectionCriteria SelectionCriteria `xml:"rlx:SelectionCriteria"`
+	KepyoReport       bool              `xml:"rlx:KepyoReport"`
+	UseValidXmlFormat bool              `xml:"rlx:UseValidXmlFormat"`
 }
 
 func (r *GetFinancialReportRequest) RequestBody() *GetFinancialReportRequestBody {
@@ -127,9 +127,9 @@ func (r *GetFinancialReportRequest) NewResponseBody() *GetFinancialReportRespons
 }
 
 type GetFinancialReportResponseBody struct {
-	XMLName                        xml.Name       `xml:"pmsint_GetFinancialReportResponse"`
-	PmsintGetFinancialReportResult ExceptionBlock `xml:"pmsint_GetFinancialReportResult"`
-	Data FinancialReportData `xml:"GetFinancialReport>Data"`
+	XMLName                        xml.Name            `xml:"pmsint_GetFinancialReportResponse"`
+	PmsintGetFinancialReportResult ExceptionBlock      `xml:"pmsint_GetFinancialReportResult"`
+	Data                           FinancialReportData `xml:"GetFinancialReport>Data"`
 }
 
 func (rb GetFinancialReportResponseBody) ExceptionBlock() ExceptionBlock {

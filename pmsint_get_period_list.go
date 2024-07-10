@@ -133,7 +133,7 @@ func (r *GetPeriodListRequest) NewResponseBody() *GetPeriodListResponseBody {
 type GetPeriodListResponseBody struct {
 	XMLName                   xml.Name       `xml:"pmsint_GetPeriodListResponse"`
 	PmsintGetPeriodListResult ExceptionBlock `xml:"pmsint_GetPeriodListResult"`
-	Period                    Periods        `xml:"GetPeriodList>Periods>cpmsint_GetPeriodListItem"`
+	Periods                   Periods        `xml:"GetPeriodList>Periods>cpmsint_GetPeriodListItem"`
 	RoomTypes                 RoomTypes      `xml:"GetPeriodList>GetPeriodList>Room"`
 }
 

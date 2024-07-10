@@ -870,3 +870,14 @@ func (report *FinancialReportData) UnmarshalXML(d *xml.Decoder, start xml.StartE
 	return nil
 }
 
+type SelectionCriteria struct {
+	REPORTTITLE string `xml:"REPORTTITLE"`
+}
+
+// type SelectionCriteria map[string]any
+//
+// func (criteria SelectionCriteria) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+// 	m := mxj.Map(criteria)
+// 	m.Xml("asdf")
+// 	return nil
+// }
