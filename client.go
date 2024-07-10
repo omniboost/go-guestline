@@ -302,13 +302,12 @@ func (c *Client) Do(req *http.Request, body interface{}) (*http.Response, error)
 	}
 
 	soapError := SoapError{}
-
 	err = c.Unmarshal(httpResp.Body, []interface{}{&soapResponse}, []interface{}{&soapError})
 	if err != nil {
 		return httpResp, err
 	}
 
-	if soapError.Body.Fault.FaultCode != "" || soapError.Body.Fault.FaultString != "" {
+	if soapError.Error() != "" {
 		return httpResp, &ErrorResponse{Response: httpResp, Err: soapError}
 	}
 
@@ -445,8 +444,23 @@ type SoapError struct {
 }
 
 func (e SoapError) Error() string {
-	return fmt.Sprintf("%s: %s", e.Body.Fault.FaultCode, e.Body.Fault.FaultString)
+	if e.Body.Fault.FaultCode != "" || e.Body.Fault.FaultString != "" {
+		return fmt.Sprintf("%s: %s", e.Body.Fault.FaultCode, e.Body.Fault.FaultString)
+	}
+	return ""
 }
+
+// <?xml version="1.0" encoding="utf-8"?>
+// <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+//   <soap:Body>
+//     <pmsint_GetFinancialReportResponse xmlns="http://tempuri.org/RLXSOAP19/RLXSOAP19">
+//       <pmsint_GetFinancialReportResult>
+//         <ExceptionCode>70004</ExceptionCode>
+//         <ExceptionDescription>Access to this web method is not permitted for your user account. Method requested: pmsint_GetFinancialReport, User: </ExceptionDescription>
+//       </pmsint_GetFinancialReportResult>
+//     </pmsint_GetFinancialReportResponse>
+//   </soap:Body>
+// </soap:Envelope>
 
 type ErrorResponse struct {
 	// HTTP response that caused this error
