@@ -203,6 +203,7 @@ func (c *Client) NewRequest(ctx context.Context, req Request) (*http.Request, er
 				{Name: xml.Name{Space: "", Local: "xmlns:xsi"}, Value: "http://www.w3.org/2001/XMLSchema-instance"},
 				{Name: xml.Name{Space: "", Local: "xmlns:xsd"}, Value: "http://www.w3.org/2001/XMLSchema"},
 				{Name: xml.Name{Space: "", Local: "xmlns:soap"}, Value: "http://schemas.xmlsoap.org/soap/envelope/"},
+				{Name: xml.Name{Space: "", Local: "xmlns:rlx"}, Value: "http://tempuri.org/RLXSOAP19/RLXSOAP19"},
 			},
 			Header: req.RequestHeaderInterface(),
 			Body: Body{
@@ -449,18 +450,6 @@ func (e SoapError) Error() string {
 	}
 	return ""
 }
-
-// <?xml version="1.0" encoding="utf-8"?>
-// <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-//   <soap:Body>
-//     <pmsint_GetFinancialReportResponse xmlns="http://tempuri.org/RLXSOAP19/RLXSOAP19">
-//       <pmsint_GetFinancialReportResult>
-//         <ExceptionCode>70004</ExceptionCode>
-//         <ExceptionDescription>Access to this web method is not permitted for your user account. Method requested: pmsint_GetFinancialReport, User: </ExceptionDescription>
-//       </pmsint_GetFinancialReportResult>
-//     </pmsint_GetFinancialReportResponse>
-//   </soap:Body>
-// </soap:Envelope>
 
 type ErrorResponse struct {
 	// HTTP response that caused this error

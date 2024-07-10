@@ -1,5 +1,11 @@
 package guestline
 
+import (
+	"encoding/xml"
+
+	"github.com/clbanning/mxj/v2"
+)
+
 type PeriodType int
 
 const (
@@ -845,3 +851,22 @@ type Period struct {
 	IStatus              string   `xml:"iStatus"`
 	StrOperatorCode      string   `xml:"strOperatorCode"`
 }
+
+type FinancialReportData map[string]any
+
+func (report *FinancialReportData) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	b := []byte{}
+	err := d.DecodeElement(&b, &start)
+	if err != nil {
+		return err
+	}
+
+	m, err := mxj.NewMapXml(b, true)
+	if err != nil {
+		return err
+	}
+
+	*report = FinancialReportData(m)
+	return nil
+}
+
