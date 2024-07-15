@@ -2,8 +2,7 @@ package guestline
 
 import (
 	"encoding/xml"
-
-	"github.com/clbanning/mxj/v2"
+	"io"
 )
 
 type PeriodType int
@@ -852,7 +851,213 @@ type Period struct {
 	StrOperatorCode      string   `xml:"strOperatorCode"`
 }
 
-type FinancialReportData map[string]any
+type FinancialReportData struct {
+	Document DOCUMENT `xml:"DOCUMENT"`
+}
+
+type DOCUMENT struct {
+	XMLName           xml.Name `xml:"DOCUMENT"`
+	ANALYSISCODESALES struct {
+		ANALYSISCODESALESTOTALS struct {
+			ANALYSISCODESALE []struct {
+				CODE          string  `xml:"CODE,attr"`
+				DESCRIPTION   string  `xml:"DESCRIPTION"`
+				NETTTOTAL     float64 `xml:"NETTTOTAL"`
+				TAXTOTAL      float64 `xml:"TAXTOTAL"`
+				GROSSTOTAL    float64 `xml:"GROSSTOTAL"`
+				MARKETSEGMENT struct {
+					CODE       []string  `xml:"CODE"`
+					NETTTOTAL  []float64 `xml:"NETTTOTAL"`
+					TAXTOTAL   []float64 `xml:"TAXTOTAL"`
+					GROSSTOTAL []float64 `xml:"GROSSTOTAL"`
+				} `xml:"MARKETSEGMENT"`
+				MEDIASOURCE struct {
+					CODE       []string  `xml:"CODE"`
+					NETTTOTAL  []float64 `xml:"NETTTOTAL"`
+					TAXTOTAL   []float64 `xml:"TAXTOTAL"`
+					GROSSTOTAL []float64 `xml:"GROSSTOTAL"`
+				} `xml:"MEDIASOURCE"`
+				MEDIASOURCEBYMARKETSEGMENT struct {
+					CODE          []string  `xml:"CODE"`
+					NETTTOTAL     []string  `xml:"NETTTOTAL"`
+					TAXTOTAL      []float64 `xml:"TAXTOTAL"`
+					GROSSTOTAL    []float64 `xml:"GROSSTOTAL"`
+					MARKETSEGMENT []struct {
+						CODE       []string  `xml:"CODE"`
+						NETTTOTAL  []float64 `xml:"NETTTOTAL"`
+						TAXTOTAL   []float64 `xml:"TAXTOTAL"`
+						GROSSTOTAL []float64 `xml:"GROSSTOTAL"`
+					} `xml:"MARKETSEGMENT"`
+				} `xml:"MEDIASOURCEBYMARKETSEGMENT"`
+				ANALYSISCODETAXSUMMARY struct {
+					ANALYSISCODETAXSUMMARYITEM struct {
+						CODE       string  `xml:"CODE,attr"`
+						NETTTOTAL  float64 `xml:"NETTTOTAL"`
+						TAXTOTAL   float64 `xml:"TAXTOTAL"`
+						GROSSTOTAL float64 `xml:"GROSSTOTAL"`
+					} `xml:"ANALYSISCODETAXSUMMARYITEM"`
+				} `xml:"ANALYSISCODETAXSUMMARY"`
+			} `xml:"ANALYSISCODESALE"`
+		} `xml:"ANALYSISCODESALESTOTALS"`
+		ANALYSISCODESALESTRANS struct {
+			ANALYSISCODESALE []struct {
+				CODE         string  `xml:"CODE,attr"`
+				TRANSID      string  `xml:"TRANSID"`
+				DESCRIPTION  string  `xml:"DESCRIPTION"`
+				QUANTITY     float64 `xml:"QUANTITY"`
+				GROSSPERUNIT float64 `xml:"GROSSPERUNIT"`
+				GROSSTOTAL   float64 `xml:"GROSSTOTAL"`
+				NETTPERUNIT  float64 `xml:"NETTPERUNIT"`
+				NETTTOTAL    float64 `xml:"NETTTOTAL"`
+				TAXTOTAL     float64 `xml:"TAXTOTAL"`
+				SOURCE       string  `xml:"SOURCE"`
+				ENTRYTYPE    string  `xml:"ENTRYTYPE"`
+				OPERATOR     string  `xml:"OPERATOR"`
+				TAXRULE      string  `xml:"TAXRULE"`
+				COMPANYREF   string  `xml:"COMPANYREF"`
+			} `xml:"ANALYSISCODESALE"`
+		} `xml:"ANALYSISCODESALESTRANS"`
+	} `xml:"ANALYSISCODESALES"`
+	DEPOSITANALYSIS struct {
+		DEPOSITANALYSISTOTALS XMLMapStringStruct[struct {
+			DESCRIPTION string  `xml:"DESCRIPTION"`
+			NETTTOTAL   float64 `xml:"NETTTOTAL"`
+			TAXTOTAL    float64 `xml:"TAXTOTAL"`
+			GROSSTOTAL  float64 `xml:"GROSSTOTAL"`
+			TAXRULE     string  `xml:"TAXRULE"`
+		}] `xml:"DEPOSITANALYSISTOTALS"`
+		DEPOSITANALYSISTRANS XMLMapStringStruct[[]struct {
+			TRANSID      string  `xml:"TRANSID"`
+			DESCRIPTION  string  `xml:"DESCRIPTION"`
+			QUANTITY     float64 `xml:"QUANTITY"`
+			GROSSPERUNIT float64 `xml:"GROSSPERUNIT"`
+			GROSSTOTAL   float64 `xml:"GROSSTOTAL"`
+			NETTPERUNIT  float64 `xml:"NETTPERUNIT"`
+			NETTTOTAL    float64 `xml:"NETTTOTAL"`
+			TAXTOTAL     float64 `xml:"TAXTOTAL"`
+			TAXRULE      string  `xml:"TAXRULE"`
+			SOURCE       string  `xml:"SOURCE"`
+		}] `xml:"DEPOSITANALYSISTRANS"`
+	} `xml:"DEPOSITANALYSIS"`
+	LEDGERANALYSIS struct {
+		LEDGERANALYSISTOTALS XMLMapStringStruct[struct {
+			DESCRIPTION string  `xml:"DESCRIPTION"`
+			NETTTOTAL   float64 `xml:"NETTTOTAL"`
+			TAXTOTAL    float64 `xml:"TAXTOTAL"`
+			GROSSTOTAL  float64 `xml:"GROSSTOTAL"`
+		}] `xml:"LEDGERANALYSISTOTALS"`
+		LEDGERANALYSISTRANS XMLMapStringStruct[[]struct {
+			TRANSID      string  `xml:"TRANSID"`
+			DESCRIPTION  string  `xml:"DESCRIPTION"`
+			QUANTITY     float64 `xml:"QUANTITY"`
+			GROSSPERUNIT float64 `xml:"GROSSPERUNIT"`
+			GROSSTOTAL   float64 `xml:"GROSSTOTAL"`
+			NETTPERUNIT  float64 `xml:"NETTPERUNIT"`
+			NETTTOTAL    float64 `xml:"NETTTOTAL"`
+			TAXTOTAL     float64 `xml:"TAXTOTAL"`
+			COMPANYREf   string  `xml:"COMPANYREf"`
+			SOURCE       string  `xml:"SOURCE"`
+		}] `xml:"LEDGERANALYSISTRANS"`
+		LEDGERANALYSISSUMMARYTRANS XMLMapStringStruct[[]struct {
+			INVOICENUMBER     string  `xml:"INVOICENUMBER"`
+			EntryType         string  `xml:"EntryType"`
+			POREFERENCENUMBER string  `xml:"POREFERENCENUMBER"`
+			COMPANYREF        string  `xml:"COMPANYREF"`
+			COMPANYNAME       string  `xml:"COMPANYNAME"`
+			DESCRIPTION       string  `xml:"DESCRIPTION"`
+			GUESTNAME         string  `xml:"GUESTNAME"`
+			INVOICEDATE       string  `xml:"INVOICEDATE"`
+			GROSSTOTAL        float64 `xml:"GROSSTOTAL"`
+			NETTTOTAL         float64 `xml:"NETTTOTAL"`
+			TAXTOTAL          float64 `xml:"TAXTOTAL"`
+			TAXID             string  `xml:"TAXID"`
+			TYPEOFBUSINESS    string  `xml:"TYPEOFBUSINESS"`
+			CITY              string  `xml:"CITY"`
+			STREET            string  `xml:"STREET"`
+			STREETNUMBER      string  `xml:"STREETNUMBER"`
+			POSTCODE          string  `xml:"POSTCODE"`
+			COUNTRY           string  `xml:"COUNTRY"`
+		}] `xml:"LEDGERANALYSISSUMMARYTRANS"`
+		LEDGERANALYSISSUMMARYTRANSWB XMLMapStringStruct[[]struct {
+			INVOICENUMBER     string  `xml:"INVOICENUMBER"`
+			EntryType         string  `xml:"EntryType"`
+			POREFERENCENUMBER string  `xml:"POREFERENCENUMBER"`
+			COMPANYREF        string  `xml:"COMPANYREF"`
+			COMPANYNAME       string  `xml:"COMPANYNAME"`
+			DESCRIPTION       string  `xml:"DESCRIPTION"`
+			GUESTNAME         string  `xml:"GUESTNAME"`
+			INVOICEDATE       string  `xml:"INVOICEDATE"`
+			GROSSTOTAL        float64 `xml:"GROSSTOTAL"`
+			NETTTOTAL         float64 `xml:"NETTTOTAL"`
+			TAXTOTAL          float64 `xml:"TAXTOTAL"`
+		}] `xml:"LEDGERANALYSISSUMMARYTRANSWB"`
+	} `xml:"LEDGERANALYSIS"`
+	PAYMENTSANALYSIS struct {
+		PAYMENTSANALYSISTOTALS struct {
+			PAYMENTSANALYSISITEM []struct {
+				CODE        string  `xml:"CODE,attr"`
+				DESCRIPTION string  `xml:"DESCRIPTION"`
+				NETTTOTAL   float64 `xml:"NETTTOTAL"`
+				TAXTOTAL    float64 `xml:"TAXTOTAL"`
+				GROSSTOTAL  float64 `xml:"GROSSTOTAL"`
+			} `xml:"PAYMENTSANALYSISITEM"`
+		} `xml:"PAYMENTSANALYSISTOTALS"`
+		PAYMENTSANALYSISTRANS struct {
+			PAYMENTSANALYSISITEM []struct {
+				CODE             string  `xml:"CODE,attr"`
+				TRANSID          string  `xml:"TRANSID"`
+				DESCRIPTION      string  `xml:"DESCRIPTION"`
+				QUANTITY         float64 `xml:"QUANTITY"`
+				GROSSPERUNIT     float64 `xml:"GROSSPERUNIT"`
+				GROSSTOTAL       float64 `xml:"GROSSTOTAL"`
+				NETTPERUNIT      float64 `xml:"NETTPERUNIT"`
+				NETTTOTAL        float64 `xml:"NETTTOTAL"`
+				TAXTOTAL         float64 `xml:"TAXTOTAL"`
+				FORDATE          string  `xml:"FORDATE"`
+				BOOKINGREFERENCE string  `xml:"BOOKINGREFERENCE"`
+				ROOMPICKID       string  `xml:"ROOMPICKID"`
+				FOLIOID          string  `xml:"FOLIOID"`
+				FOLIOSPLITID     string  `xml:"FOLIOSPLITID"`
+				CUSTOMERNAME     string  `xml:"CUSTOMERNAME"`
+				CONTACTNAME      string  `xml:"CONTACTNAME"`
+			} `xml:"PAYMENTSANALYSISITEM"`
+		} `xml:"PAYMENTSANALYSISTRANS"`
+	} `xml:"PAYMENTSANALYSIS"`
+	TAXANALYSIS struct {
+		TAXANALYSISITEM []struct {
+			CODE        string  `xml:"CODE,attr"`
+			DESCRIPTION string  `xml:"DESCRIPTION"`
+			NETT        float64 `xml:"NETT"`
+			TAX         float64 `xml:"TAX"`
+			GROSS       float64 `xml:"GROSS"`
+		} `xml:"TAXANALYSISITEM"`
+	} `xml:"TAXANALYSIS"`
+	INHOUSEANALYSIS struct {
+		INHOUSEANALYSISTOTALS XMLMapStringStruct[struct {
+			DESCRIPTION string  `xml:"DESCRIPTION"`
+			NETTTOTAL   float64 `xml:"NETTTOTAL"`
+			TAXTOTAL    float64 `xml:"TAXTOTAL"`
+			GROSSTOTAL  float64 `xml:"GROSSTOTAL"`
+		}] `xml:"INHOUSEANALYSISTOTALS"`
+	} `xml:"INHOUSEANALYSIS"`
+	OCCUPANCY struct {
+		ITEM []struct {
+			DESCRIPTION string `xml:"DESCRIPTION,attr"`
+			GROSS       string `xml:"GROSS,attr"`
+			NETT        string `xml:"NETT,attr"`
+		} `xml:"ITEM"`
+	} `xml:"OCCUPANCY"`
+	OCCUPANCYBYMARKETSEGMENT struct {
+		MARKETSEGMENT []struct {
+			CODE string `xml:"CODE,attr"`
+			ITEM []struct {
+				DESCRIPTION string  `xml:"DESCRIPTION,attr"`
+				GROSS       float64 `xml:"GROSS,attr"`
+				NETT        float64 `xml:"NETT,attr"`
+			} `xml:"ITEM"`
+		} `xml:"MARKETSEGMENT"`
+	} `xml:"OCCUPANCYBYMARKETSEGMENT"`
+}
 
 func (report *FinancialReportData) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
 	b := []byte{}
@@ -861,23 +1066,46 @@ func (report *FinancialReportData) UnmarshalXML(d *xml.Decoder, start xml.StartE
 		return err
 	}
 
-	m, err := mxj.NewMapXml(b, true)
+	err = xml.Unmarshal(b, &report.Document)
 	if err != nil {
 		return err
 	}
 
-	*report = FinancialReportData(m)
+	return nil
+}
+
+type XMLMapStringStruct[T any] map[string]T
+
+func (mp *XMLMapStringStruct[T]) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	*mp = XMLMapStringStruct[T]{}
+	for {
+		token, err := d.Token()
+		if err != nil {
+			// Quit for-loop when EOF is reached
+			if err == io.EOF {
+				break
+			}
+
+			return err
+		}
+
+		sToken, ok := token.(xml.StartElement)
+		if !ok {
+			continue
+		}
+
+		var t T
+		err = d.DecodeElement(&t, &sToken)
+		if err != nil {
+			return err
+		}
+
+		(*mp)[(sToken.Name.Local)] = t
+	}
+
 	return nil
 }
 
 type SelectionCriteria struct {
 	REPORTTITLE string `xml:"REPORTTITLE"`
 }
-
-// type SelectionCriteria map[string]any
-//
-// func (criteria SelectionCriteria) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
-// 	m := mxj.Map(criteria)
-// 	m.Xml("asdf")
-// 	return nil
-// }
