@@ -1146,3 +1146,89 @@ type FinancialDocumentSummaryItem struct {
 	AddressSource     string   `xml:"AddressSource"`
 	AddressRef        string   `xml:"AddressRef"`
 }
+
+type DocumentDetail struct {
+	XMLName         xml.Name `xml:"DocumentDetail"`
+	Text            string   `xml:",chardata"`
+	DocumentSummary struct {
+		Text              string   `xml:",chardata"`
+		BookRefRoomRef    string   `xml:"BookRefRoomRef"`
+		FolioId           string   `xml:"FolioId"`
+		FolioSplitId      string   `xml:"FolioSplitId"`
+		DocumentRef       string   `xml:"DocumentRef"`
+		DocumentType      string   `xml:"DocumentType"`
+		DocumentTimestamp DateTime `xml:"DocumentTimestamp"`
+		LedgerRef         string   `xml:"LedgerRef"`
+		LedgerName        string   `xml:"LedgerName"`
+		GrossTotal        float64  `xml:"GrossTotal"`
+		NettTotal         float64  `xml:"NettTotal"`
+		TaxTotal          float64  `xml:"TaxTotal"`
+		ArrivalDate       DateTime `xml:"ArrivalDate"`
+		DepartureDate     DateTime `xml:"DepartureDate"`
+		AddressSource     string   `xml:"AddressSource"`
+		AddressRef        string   `xml:"AddressRef"`
+	} `xml:"DocumentSummary"`
+	HeaderDetails struct {
+		Text     string `xml:",chardata"`
+		Title    string `xml:"Title"`
+		Forename string `xml:"Forename"`
+		Surname  string `xml:"Surname"`
+		Address1 string `xml:"Address1"`
+		Address2 string `xml:"Address2"`
+		City     string `xml:"City"`
+		County   string `xml:"County"`
+		Country  string `xml:"Country"`
+		Postcode string `xml:"Postcode"`
+	} `xml:"HeaderDetails"`
+	TransactionLines struct {
+		Text                               string `xml:",chardata"`
+		FinancialDocumentDetailTransaction []struct {
+			Text                    string   `xml:",chardata"`
+			ItemType                string   `xml:"ItemType"`
+			EntryType               string   `xml:"EntryType"`
+			Status                  string   `xml:"Status"`
+			AnalCode                string   `xml:"AnalCode"`
+			BookRef                 string   `xml:"BookRef"`
+			Comments                string   `xml:"Comments"`
+			ConversionId            string   `xml:"ConversionId"`
+			ConvertedGrossTotal     string   `xml:"ConvertedGrossTotal"`
+			Description             string   `xml:"Description"`
+			EndDate                 DateTime `xml:"EndDate"`
+			FinTransactionParam1    string   `xml:"FinTransactionParam1"`
+			FinTransactionParam2    string   `xml:"FinTransactionParam2"`
+			ForDate                 DateTime `xml:"ForDate"`
+			GrossPerUnit            float64  `xml:"GrossPerUnit"`
+			GrossTotal              float64  `xml:"GrossTotal"`
+			IndexOfDate             string   `xml:"IndexOfDate"`
+			IsFolioCharge           string   `xml:"IsFolioCharge"`
+			NettPerUnit             float64  `xml:"NettPerUnit"`
+			NettTotal               float64  `xml:"NettTotal"`
+			NoOfNights              int      `xml:"NoOfNights"`
+			OrderIndex              string   `xml:"OrderIndex"`
+			PackageCode             string   `xml:"PackageCode"`
+			PaymentCode             string   `xml:"PaymentCode"`
+			Quantity                float64  `xml:"Quantity"`
+			RoomPickId              string   `xml:"RoomPickId"`
+			SourceTransId           string   `xml:"SourceTransId"`
+			StartDate               DateTime `xml:"StartDate"`
+			TaxReference            string   `xml:"TaxReference"`
+			TaxTotal                string   `xml:"TaxTotal"`
+			Timestamp               DateTime `xml:"Timestamp"`
+			TransactionWasCategAs   string   `xml:"TransactionWasCategAs"`
+			TransactionWasGroupedBy string   `xml:"TransactionWasGroupedBy"`
+			TransId                 string   `xml:"TransId"`
+			NettSequence            string   `xml:"NettSequence"`
+		} `xml:"FinancialDocumentDetailTransaction"`
+	} `xml:"TransactionLines"`
+	Footer struct {
+		Text                           string `xml:",chardata"`
+		FinancialDocumentDetailTaxLine struct {
+			Text        string  `xml:",chardata"`
+			TaxRule     string  `xml:"TaxRule"`
+			Description string  `xml:"Description"`
+			NettTotal   float64 `xml:"NettTotal"`
+			TaxTotal    float64 `xml:"TaxTotal"`
+			GrossTotal  float64 `xml:"GrossTotal"`
+		} `xml:"FinancialDocumentDetailTaxLine"`
+	} `xml:"Footer"`
+}
