@@ -15,6 +15,15 @@ const (
 	PeriodTypeEndOfYear  PeriodType = 5
 )
 
+type DocumentType string
+
+const (
+	DocumentTypeAll             DocumentType = "All"
+	DocumentTypeInvoicesOnly    DocumentType = "InvoicesOnly"
+	DocumentTypeCreditNotesOnly DocumentType = "CreditNotesOnly"
+	DocumentTypeFolioBillsOnly  DocumentType = "FolioBillsOnly"
+)
+
 type VoucherType struct {
 	ID      int    `json:"id"`
 	Version int    `json:"version"`
@@ -1108,4 +1117,32 @@ func (mp *XMLMapStringStruct[T]) UnmarshalXML(d *xml.Decoder, start xml.StartEle
 
 type SelectionCriteria struct {
 	REPORTTITLE string `xml:"REPORTTITLE"`
+}
+
+type FinancialDocumentSummaryItem struct {
+	XMLName        xml.Name `xml:"FinancialDocumentSummaryItem"`
+	Text           string   `xml:",chardata"`
+	BookRefRoomRef string   `xml:"BookRefRoomRef"`
+	FolioId        struct {
+		Text string `xml:",chardata"`
+		Nil  string `xml:"nil,attr"`
+	} `xml:"FolioId"`
+	FolioSplitId struct {
+		Text string `xml:",chardata"`
+		Nil  string `xml:"nil,attr"`
+	} `xml:"FolioSplitId"`
+	DocumentRef       string   `xml:"DocumentRef"`
+	DocumentType      string   `xml:"DocumentType"`
+	DocumentTimestamp DateTime `xml:"DocumentTimestamp"`
+	Forename          string   `xml:"Forename"`
+	Surname           string   `xml:"Surname"`
+	LedgerRef         string   `xml:"LedgerRef"`
+	LedgerName        string   `xml:"LedgerName"`
+	GrossTotal        float64  `xml:"GrossTotal"`
+	NettTotal         float64  `xml:"NettTotal"`
+	TaxTotal          float64  `xml:"TaxTotal"`
+	ArrivalDate       DateTime `xml:"ArrivalDate"`
+	DepartureDate     DateTime `xml:"DepartureDate"`
+	AddressSource     string   `xml:"AddressSource"`
+	AddressRef        string   `xml:"AddressRef"`
 }
