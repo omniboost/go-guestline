@@ -1232,3 +1232,50 @@ type DocumentDetail struct {
 		} `xml:"FinancialDocumentDetailTaxLine"`
 	} `xml:"Footer"`
 }
+
+type GetCompanyProfile struct {
+	CompanyRef              string `xml:"CompanyRef"`
+	RFlag                   string `xml:"RFlag"`
+	Name                    string `xml:"Name"`
+	ModifiedUTC             string `xml:"ModifiedUTC"`
+	CreatedUTC              string `xml:"CreatedUTC"`
+	AddressLine1            string `xml:"AddressLine1"`
+	AddressLine2            string `xml:"AddressLine2"`
+	Street                  string `xml:"Street"`
+	Area                    string `xml:"Area"`
+	Town                    string `xml:"Town"`
+	County                  string `xml:"County"`
+	Country                 string `xml:"Country"`
+	Postcode                string `xml:"Postcode"`
+	TelNo                   string `xml:"TelNo"`
+	FaxNo                   string `xml:"FaxNo"`
+	FaxNo2                  string `xml:"FaxNo2"`
+	EMail                   string `xml:"EMail"`
+	ContactProfileRef       string `xml:"ContactProfileRef"`
+	CreditFacility          string `xml:"CreditFacility"`
+	CreditLimit             string `xml:"CreditLimit"`
+	CompanyRegNum           string `xml:"CompanyRegNum"`
+	ABTA                    string `xml:"ABTA"`
+	ATOL                    string `xml:"ATOL"`
+	CIF                     string `xml:"CIF"`
+	TaxId                   string `xml:"TaxId"`
+	TaxAuthority            string `xml:"TaxAuthority"`
+	TypeOfBusiness          string `xml:"TypeOfBusiness"`
+	AccountsPayableTitle    string `xml:"AccountsPayableTitle"`
+	AccountsPayableForename string `xml:"AccountsPayableForename"`
+	AccountsPayableSurname  string `xml:"AccountsPayableSurname"`
+	AccountsPayableEmail    string `xml:"AccountsPayableEmail"`
+	CompanyHierarchyType    string `xml:"CompanyHierarchyType"`
+	CompanyHierarchy        string `xml:"CompanyHierarchy"`
+	CustomAttributes        struct {
+		ProfileCustomAttributes []struct {
+			AttributeCode               string `xml:"AttributeCode"`
+			Value                       string `xml:"Value"`
+			Param1                      string `xml:"Param1"`
+			Param2                      string `xml:"Param2"`
+			ProfileAttributeCode        string `xml:"ProfileAttributeCode"`
+			ProfileAttributeDescription string `xml:"ProfileAttributeDescription"`
+			ProfileAttributeValue       string `xml:"ProfileAttributeValue"`
+		} `xml:"ProfileCustomAttributes"`
+	} `xml:"CustomAttributes"`
+}
