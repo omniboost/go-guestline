@@ -104,7 +104,7 @@ type GetDocumentSummaryListRequestBody struct {
 	SessionID     string       `xml:"rlx:SessionID"`
 	FromTimestamp DateTime     `xml:"rlx:FromTimestamp"`
 	ToTimestamp   DateTime     `xml:"rlx:ToTimestamp"`
-	DocumentTypes DocumentType `xml:"rlx:FinancialDocumentType"`
+	DocumentTypes DocumentType `xml:"rlx:DocumentTypes"`
 }
 
 func (r *GetDocumentSummaryListRequest) RequestBody() *GetDocumentSummaryListRequestBody {
