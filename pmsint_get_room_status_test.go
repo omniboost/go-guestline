@@ -8,7 +8,8 @@ import (
 
 func TestGetRoomStatus(t *testing.T) {
 	req := client.NewGetRoomStatusRequest()
-	req.RequestBody().TheRequest = VoidPOSCheckRequest {}
+	req.RequestBody().SessionID = "X"
+	req.RequestBody().RoomID = "101"
 	resp, err := req.Do()
 	if err != nil {
 		t.Error(err)
