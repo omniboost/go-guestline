@@ -1051,9 +1051,10 @@ type DOCUMENT struct {
 	} `xml:"INHOUSEANALYSIS"`
 	OCCUPANCY struct {
 		ITEM []struct {
-			DESCRIPTION string `xml:"DESCRIPTION,attr"`
-			GROSS       string `xml:"GROSS,attr"`
-			NETT        string `xml:"NETT,attr"`
+			DESCRIPTION string  `xml:"DESCRIPTION,attr"`
+			GROSS       float64 `xml:"GROSS,attr"`
+			NETT        float64 `xml:"NETT,attr"`
+			VALUE       float64 `xml:",chardata"`
 		} `xml:"ITEM"`
 	} `xml:"OCCUPANCY"`
 	OCCUPANCYBYMARKETSEGMENT struct {
@@ -1063,6 +1064,7 @@ type DOCUMENT struct {
 				DESCRIPTION string  `xml:"DESCRIPTION,attr"`
 				GROSS       float64 `xml:"GROSS,attr"`
 				NETT        float64 `xml:"NETT,attr"`
+				VALUE       float64 `xml:",chardata"`
 			} `xml:"ITEM"`
 		} `xml:"MARKETSEGMENT"`
 	} `xml:"OCCUPANCYBYMARKETSEGMENT"`
