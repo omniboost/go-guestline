@@ -1054,7 +1054,7 @@ type DOCUMENT struct {
 			DESCRIPTION string  `xml:"DESCRIPTION,attr"`
 			GROSS       float64 `xml:"GROSS,attr"`
 			NETT        float64 `xml:"NETT,attr"`
-			VALUE       float64 `xml:",chardata"`
+			VALUE       string  `xml:",chardata"`
 		} `xml:"ITEM"`
 	} `xml:"OCCUPANCY"`
 	OCCUPANCYBYMARKETSEGMENT struct {
