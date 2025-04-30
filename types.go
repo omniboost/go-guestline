@@ -964,7 +964,7 @@ type DOCUMENT struct {
 			NETTPERUNIT  float64 `xml:"NETTPERUNIT"`
 			NETTTOTAL    float64 `xml:"NETTTOTAL"`
 			TAXTOTAL     float64 `xml:"TAXTOTAL"`
-			COMPANYREf   string  `xml:"COMPANYREf"`
+			COMPANYREF   string  `xml:"COMPANYREf"`
 			SOURCE       string  `xml:"SOURCE"`
 		}] `xml:"LEDGERANALYSISTRANS"`
 		LEDGERANALYSISSUMMARYTRANS XMLMapStringStruct[[]struct {
