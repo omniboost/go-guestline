@@ -3,6 +3,9 @@ package guestline
 import (
 	"encoding/xml"
 	"io"
+	"reflect"
+
+	"github.com/pkg/errors"
 )
 
 type PeriodType int
@@ -935,7 +938,7 @@ type DOCUMENT struct {
 			GROSSTOTAL  float64 `xml:"GROSSTOTAL"`
 			TAXRULE     string  `xml:"TAXRULE"`
 		}] `xml:"DEPOSITANALYSISTOTALS"`
-		DEPOSITANALYSISTRANS XMLMapStringStruct[struct {
+		DEPOSITANALYSISTRANS XMLMapStringStruct[[]struct {
 			TRANSID      string  `xml:"TRANSID"`
 			DESCRIPTION  string  `xml:"DESCRIPTION"`
 			QUANTITY     float64 `xml:"QUANTITY"`
@@ -955,7 +958,7 @@ type DOCUMENT struct {
 			TAXTOTAL    float64 `xml:"TAXTOTAL"`
 			GROSSTOTAL  float64 `xml:"GROSSTOTAL"`
 		}] `xml:"LEDGERANALYSISTOTALS"`
-		LEDGERANALYSISTRANS XMLMapStringStruct[struct {
+		LEDGERANALYSISTRANS XMLMapStringStruct[[]struct {
 			TRANSID      string  `xml:"TRANSID"`
 			DESCRIPTION  string  `xml:"DESCRIPTION"`
 			QUANTITY     float64 `xml:"QUANTITY"`
@@ -967,7 +970,7 @@ type DOCUMENT struct {
 			COMPANYREF   string  `xml:"COMPANYREf"`
 			SOURCE       string  `xml:"SOURCE"`
 		}] `xml:"LEDGERANALYSISTRANS"`
-		LEDGERANALYSISSUMMARYTRANS XMLMapStringStruct[struct {
+		LEDGERANALYSISSUMMARYTRANS XMLMapStringStruct[[]struct {
 			INVOICENUMBER     string  `xml:"INVOICENUMBER"`
 			EntryType         string  `xml:"EntryType"`
 			POREFERENCENUMBER string  `xml:"POREFERENCENUMBER"`
@@ -987,7 +990,7 @@ type DOCUMENT struct {
 			POSTCODE          string  `xml:"POSTCODE"`
 			COUNTRY           string  `xml:"COUNTRY"`
 		}] `xml:"LEDGERANALYSISSUMMARYTRANS"`
-		LEDGERANALYSISSUMMARYTRANSWB XMLMapStringStruct[struct {
+		LEDGERANALYSISSUMMARYTRANSWB XMLMapStringStruct[[]struct {
 			INVOICENUMBER     string  `xml:"INVOICENUMBER"`
 			EntryType         string  `xml:"EntryType"`
 			POREFERENCENUMBER string  `xml:"POREFERENCENUMBER"`
@@ -1085,7 +1088,7 @@ func (report *FinancialReportData) UnmarshalXML(d *xml.Decoder, start xml.StartE
 	return nil
 }
 
-type XMLMapStringStruct[T any] map[string][]T
+type XMLMapStringStruct[T any] map[string]T
 
 func (mp *XMLMapStringStruct[T]) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
 	*mp = XMLMapStringStruct[T]{}
@@ -1118,12 +1121,26 @@ func (mp *XMLMapStringStruct[T]) UnmarshalXML(d *xml.Decoder, start xml.StartEle
 			return err
 		}
 
-		// append it to the slice in the map
-		if (*mp)[(sToken.Name.Local)] == nil {
-			(*mp)[(sToken.Name.Local)] = make([]T, 0)
-		}
+		// check if t is a slice
+		tValue := reflect.ValueOf(t)
+		if tValue.Kind() == reflect.Slice {
+			// get the map[string]any value and convert it to a reflect.Value
+			// we assume it's really a slice and not something different
+			// so this could explode
+			sliceValue := reflect.ValueOf((*mp)[(sToken.Name.Local)])
 
-		(*mp)[(sToken.Name.Local)] = append((*mp)[(sToken.Name.Local)], t)
+			// append the t(Value) to the sliceValue
+			sliceValue = reflect.AppendSlice(sliceValue, tValue)
+
+			// update the original map[string]any to contain the new slice
+			(*mp)[(sToken.Name.Local)], ok = sliceValue.Interface().(T)
+			if !ok {
+				return errors.New("failed to convert slice to T")
+			}
+			continue
+		} else {
+			(*mp)[(sToken.Name.Local)] = t
+		}
 	}
 
 	return nil

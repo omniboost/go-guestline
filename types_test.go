@@ -11,7 +11,11 @@ func TestXMLMapStringStructUnmarshalSlice(t *testing.T) {
 	b := `<root>
 		<header1>
 			<test>1</test>
+		</header1>
+		<header1>
 			<test>2</test>
+		</header1>
+		<header1>
 			<test>3</test>
 		</header1>
 	</root>`
