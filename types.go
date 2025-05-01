@@ -935,7 +935,7 @@ type DOCUMENT struct {
 			GROSSTOTAL  float64 `xml:"GROSSTOTAL"`
 			TAXRULE     string  `xml:"TAXRULE"`
 		}] `xml:"DEPOSITANALYSISTOTALS"`
-		DEPOSITANALYSISTRANS XMLMapStringStruct[[]struct {
+		DEPOSITANALYSISTRANS XMLMapStringStruct[struct {
 			TRANSID      string  `xml:"TRANSID"`
 			DESCRIPTION  string  `xml:"DESCRIPTION"`
 			QUANTITY     float64 `xml:"QUANTITY"`
@@ -955,7 +955,7 @@ type DOCUMENT struct {
 			TAXTOTAL    float64 `xml:"TAXTOTAL"`
 			GROSSTOTAL  float64 `xml:"GROSSTOTAL"`
 		}] `xml:"LEDGERANALYSISTOTALS"`
-		LEDGERANALYSISTRANS XMLMapStringStruct[[]struct {
+		LEDGERANALYSISTRANS XMLMapStringStruct[struct {
 			TRANSID      string  `xml:"TRANSID"`
 			DESCRIPTION  string  `xml:"DESCRIPTION"`
 			QUANTITY     float64 `xml:"QUANTITY"`
@@ -967,7 +967,7 @@ type DOCUMENT struct {
 			COMPANYREF   string  `xml:"COMPANYREf"`
 			SOURCE       string  `xml:"SOURCE"`
 		}] `xml:"LEDGERANALYSISTRANS"`
-		LEDGERANALYSISSUMMARYTRANS XMLMapStringStruct[[]struct {
+		LEDGERANALYSISSUMMARYTRANS XMLMapStringStruct[struct {
 			INVOICENUMBER     string  `xml:"INVOICENUMBER"`
 			EntryType         string  `xml:"EntryType"`
 			POREFERENCENUMBER string  `xml:"POREFERENCENUMBER"`
@@ -987,7 +987,7 @@ type DOCUMENT struct {
 			POSTCODE          string  `xml:"POSTCODE"`
 			COUNTRY           string  `xml:"COUNTRY"`
 		}] `xml:"LEDGERANALYSISSUMMARYTRANS"`
-		LEDGERANALYSISSUMMARYTRANSWB XMLMapStringStruct[[]struct {
+		LEDGERANALYSISSUMMARYTRANSWB XMLMapStringStruct[struct {
 			INVOICENUMBER     string  `xml:"INVOICENUMBER"`
 			EntryType         string  `xml:"EntryType"`
 			POREFERENCENUMBER string  `xml:"POREFERENCENUMBER"`
@@ -1085,10 +1085,11 @@ func (report *FinancialReportData) UnmarshalXML(d *xml.Decoder, start xml.StartE
 	return nil
 }
 
-type XMLMapStringStruct[T any] map[string]T
+type XMLMapStringStruct[T any] map[string][]T
 
 func (mp *XMLMapStringStruct[T]) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
 	*mp = XMLMapStringStruct[T]{}
+
 	for {
 		token, err := d.Token()
 		if err != nil {
@@ -1105,13 +1106,24 @@ func (mp *XMLMapStringStruct[T]) UnmarshalXML(d *xml.Decoder, start xml.StartEle
 			continue
 		}
 
+		if sToken.Name.Local == start.Name.Local {
+			// this is the root element, skip it, since we want the children
+			continue
+		}
+
+		// Decode the child element into a struct
 		var t T
-		err = d.DecodeElement(&t, &sToken)
+		err = d.DecodeElement(&t, &start)
 		if err != nil {
 			return err
 		}
 
-		(*mp)[(sToken.Name.Local)] = t
+		// append it to the slice in the map
+		if (*mp)[(sToken.Name.Local)] == nil {
+			(*mp)[(sToken.Name.Local)] = make([]T, 0)
+		}
+
+		(*mp)[(sToken.Name.Local)] = append((*mp)[(sToken.Name.Local)], t)
 	}
 
 	return nil
