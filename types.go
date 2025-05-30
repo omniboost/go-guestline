@@ -872,11 +872,19 @@ type DOCUMENT struct {
 	ANALYSISCODESALES struct {
 		ANALYSISCODESALESTOTALS struct {
 			ANALYSISCODESALE []struct {
-				CODE          string  `xml:"CODE,attr"`
-				DESCRIPTION   string  `xml:"DESCRIPTION"`
-				NETTTOTAL     float64 `xml:"NETTTOTAL"`
-				TAXTOTAL      float64 `xml:"TAXTOTAL"`
-				GROSSTOTAL    float64 `xml:"GROSSTOTAL"`
+				CODE                         string  `xml:"CODE,attr"`
+				DESCRIPTION                  string  `xml:"DESCRIPTION"`
+				NETTTOTAL                    float64 `xml:"NETTTOTAL"`
+				TAXTOTAL                     float64 `xml:"TAXTOTAL"`
+				GROSSTOTAL                   float64 `xml:"GROSSTOTAL"`
+				ANALYSISCODETAXANALYSISITEMS []struct {
+					CODE           string  `xml:"CODE,attr"`
+					SEQUENCENUMBER string  `xml:"SEQUENCENUMBER,attr"`
+					DESCRIPTION    string  `xml:"DESCRIPTION"`
+					MODE           string  `xml:"MODE"`
+					PARAMETER      float64 `xml:"PARAMETER"`
+					TAXTOTAL       float64 `xml:"TAXTOTAL"`
+				} `xml:"ANALYSISCODETAXANALYSISITEMS>ANALYSISCODETAXANALYSISITEM"`
 				MARKETSEGMENT struct {
 					CODE       []string  `xml:"CODE"`
 					NETTTOTAL  []float64 `xml:"NETTTOTAL"`
