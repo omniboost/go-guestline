@@ -114,7 +114,12 @@ type BookingSearchRequestBody struct {
 		RoomPickID                    string   `xml:"RoomPickID,omitempty"`
 		ArrivalDate                   *Date    `xml:"ArrivalDate,omitempty"`
 		DepartureDate                 *Date    `xml:"DepartureDate,omitempty"`
-		BookingStatuses               []string `xml:BookingStatus,omitempty`
+		CreationDate                  *Date    `xml:"CreationDate,omitempty"`
+		CreatedFrom                   *Date    `xml:"CreatedFrom,omitempty"`
+		CreatedTo                     *Date    `xml:"CreatedTo,omitempty"`
+		LastEditFrom                  *Date    `xml:"LastEditFrom,omitempty"`
+		LastEditTo                    *Date    `xml:"LastEditTo,omitempty"`
+		BookingStatuses               []string `xml:"BookingStatus>BookingSearchBookingStatus,omitempty"`
 		ReturnAllGuestsInNameSearches bool     `xml:"ReturnAllGuestsInNameSearches"`
 	} `xml:"Filters"`
 }
