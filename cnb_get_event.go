@@ -107,9 +107,8 @@ func (r GetEventRequest) NewRequestBody() GetEventRequestBody {
 }
 
 type GetEventRequestBody struct {
-	XMLName   xml.Name `xml:"http://tempuri.org/RLXSOAP19/RLXSOAP19 cnb_GetEvent"`
-	SessionID string
-	EventRef  string `xml:"eventRef,omitempty"`
+	XMLName  xml.Name `xml:"http://tempuri.org/RLXSOAP19/RLXSOAP19 cnb_GetEvent"`
+	EventRef string   `xml:"eventRef,omitempty"`
 }
 
 func (r *GetEventRequest) RequestBody() *GetEventRequestBody {
@@ -144,12 +143,6 @@ func (r *GetEventRequest) URL() *url.URL {
 
 func (r *GetEventRequest) Do() (GetEventResponseBody, error) {
 	var err error
-
-	// fetch a new token if it isn't set already
-	r.requestBody.SessionID, err = r.client.SessionID()
-	if err != nil {
-		return *r.NewResponseBody(), err
-	}
 
 	// Create http request
 	req, err := r.client.NewRequest(nil, r)
