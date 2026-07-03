@@ -402,12 +402,16 @@ func CheckResponse(r *http.Response) error {
 	data, err := ioutil.ReadAll(r.Body)
 	r.Body = ioutil.NopCloser(bytes.NewReader(data))
 	if err != nil {
+		errorResponse.Err = errors.New(r.Status)
 		return errorResponse
 	}
 
-	err = checkContentType(r)
-	if err != nil {
-		return errors.WithStack(err)
+	// The response body isn't the expected xml. This happens when a
+	// gateway/proxy or a maintenance page answers with text/html (or some
+	// other content type) instead of Guestline's SOAP response.
+	if cerr := checkContentType(r); cerr != nil {
+		errorResponse.Err = errors.New(r.Status)
+		return errorResponse
 	}
 
 	if r.ContentLength == 0 {
