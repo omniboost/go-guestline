@@ -132,7 +132,7 @@ func (rb GetDocumentDetailResponseBody) ExceptionBlock() ExceptionBlock {
 }
 
 func (r *GetDocumentDetailRequest) URL() *url.URL {
-	u := r.client.GetEndpointURL("rlxsoap.asmx", r.PathParams())
+	u := r.client.GetEndpointURL("", r.PathParams())
 	return &u
 }
 

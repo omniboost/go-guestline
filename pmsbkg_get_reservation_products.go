@@ -139,7 +139,7 @@ func (rb GetReservationProductsResponseBody) ExceptionBlock() ExceptionBlock {
 }
 
 func (r *GetReservationProductsRequest) URL() *url.URL {
-	u := r.client.GetEndpointURL("rlxsoap.asmx", r.PathParams())
+	u := r.client.GetEndpointURL("", r.PathParams())
 	return &u
 }
 

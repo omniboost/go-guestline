@@ -139,7 +139,7 @@ func (rb GetRoomStatusResponseBody) ExceptionBlock() ExceptionBlock {
 }
 
 func (r *GetRoomStatusRequest) URL() *url.URL {
-	u := r.client.GetEndpointURL("rlxsoap.asmx", r.PathParams())
+	u := r.client.GetEndpointURL("", r.PathParams())
 	return &u
 }
 

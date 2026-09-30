@@ -139,7 +139,7 @@ func (rb GetProfileEventsResponseBody) ExceptionBlock() ExceptionBlock {
 }
 
 func (r *GetProfileEventsRequest) URL() *url.URL {
-	u := r.client.GetEndpointURL("rlxsoap.asmx", r.PathParams())
+	u := r.client.GetEndpointURL("", r.PathParams())
 	return &u
 }
 

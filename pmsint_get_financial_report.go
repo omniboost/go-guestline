@@ -137,7 +137,7 @@ func (rb GetFinancialReportResponseBody) ExceptionBlock() ExceptionBlock {
 }
 
 func (r *GetFinancialReportRequest) URL() *url.URL {
-	u := r.client.GetEndpointURL("rlxsoap.asmx", r.PathParams())
+	u := r.client.GetEndpointURL("", r.PathParams())
 	return &u
 }
 

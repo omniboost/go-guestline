@@ -140,7 +140,7 @@ func (rb GetResidentsResponseBody) ExceptionBlock() ExceptionBlock {
 }
 
 func (r *GetResidentsRequest) URL() *url.URL {
-	u := r.client.GetEndpointURL("rlxsoap.asmx", r.PathParams())
+	u := r.client.GetEndpointURL("", r.PathParams())
 	return &u
 }
 

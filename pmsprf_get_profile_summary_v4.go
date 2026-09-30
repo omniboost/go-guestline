@@ -156,7 +156,7 @@ func (rb GetProfileSummaryV4ResponseBody) ExceptionBlock() ExceptionBlock {
 }
 
 func (r *GetProfileSummaryV4Request) URL() *url.URL {
-	u := r.client.GetEndpointURL("rlxsoap.asmx", r.PathParams())
+	u := r.client.GetEndpointURL("", r.PathParams())
 	return &u
 }
 

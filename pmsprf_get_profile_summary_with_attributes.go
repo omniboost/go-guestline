@@ -135,7 +135,7 @@ func (rb GetProfileSummaryWithAttributesResponseBody) ExceptionBlock() Exception
 }
 
 func (r *GetProfileSummaryWithAttributesRequest) URL() *url.URL {
-	u := r.client.GetEndpointURL("rlxsoap.asmx?op=pmsprf_GetProfileSummaryWithAttributes", r.PathParams())
+	u := r.client.GetEndpointURL("?op=pmsprf_GetProfileSummaryWithAttributes", r.PathParams())
 	return &u
 }
 

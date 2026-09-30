@@ -28,8 +28,7 @@ const (
 var (
 	BaseURL = url.URL{
 		Scheme: "https",
-		Host:   "pmsws.eu.guestline.net",
-		Path:   "/RLXSoapRouter",
+		Host:   "rlxsoap.eu.guestline.app",
 	}
 )
 
